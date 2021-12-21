@@ -1,9 +1,13 @@
 package app.controller;
 
+import app.App;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 public class MainSceneController {
     
@@ -13,8 +17,19 @@ public class MainSceneController {
     @FXML
     private Pane imageBlackout;
 
+    @FXML
+    private ImageView imageView;
+
+    private Stage stage;
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
     public void goToChartsButtonClicked(ActionEvent event) {
-        System.out.println("goToChartsButtonClickedButtonClicked");
+        stage.setScene(App.fuzzyChartsScene);
+        stage.centerOnScreen();
+        System.out.println("--> goToChartsButtonClickedButtonClicked");
     }
 
     public void goToRulesBaseButtonClicked(ActionEvent event) {
@@ -27,16 +42,20 @@ public class MainSceneController {
 
     public void opacitySliderMoved(Number oldValue, Number newValue) {
         if (Math.abs(newValue.intValue() - oldValue.intValue()) == 0) return;
-        System.out.println("newValue=" + newValue.intValue());
         imageBlackout.setOpacity(newValue.intValue() / 100.0);
     }
 
-    public void activateSliderListening() {
+    public void activateSliderListening(int blackoutInPercents) {
         opacitySlider.valueProperty().addListener((obs, oldValue, newValue) -> opacitySliderMoved(oldValue, newValue));
+        imageBlackout.setOpacity(blackoutInPercents / 100.0);
+        opacitySlider.setValue(blackoutInPercents);
     }
 
-    public void setStartImageBlackout(double value) {
-        imageBlackout.setOpacity(value);
-        opacitySlider.setValue(value * 100);
+    public Image getBackgroundImage() {
+        return imageView.getImage();
+    }
+
+    public int getBlackoutValue() {
+        return imageBlackout.opacityProperty().intValue();
     }
 }

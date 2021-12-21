@@ -15,7 +15,7 @@
 
 <StackPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controller.MainSceneController">
    <children>
-      <ImageView fitHeight="600.0" fitWidth="1001.0" pickOnBounds="true" StackPane.alignment="CENTER">
+      <ImageView fx:id="imageView" fitHeight="600.0" fitWidth="1001.0" pickOnBounds="true" StackPane.alignment="CENTER">
          <image>
             <Image url="@/app/images/mainSceneBackground.jpg" />
          </image>
