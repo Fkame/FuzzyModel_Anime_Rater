@@ -42,6 +42,7 @@ public class FuzzyChartsController {
 
     public List<XYChart.Series<Double,Double>> prepareSeries(List<FuzzySet> variable, BigDecimal step) {
         List<XYChart.Series<Double,Double>> series = new ArrayList<>();
+        
         for (FuzzySet term : variable) {
             XYChart.Series<Double,Double> ds = new XYChart.Series<>();
             ds.setName(term.getFuzzySetName());
@@ -64,36 +65,19 @@ public class FuzzyChartsController {
     }
 
     public void drawSoundChart(List<XYChart.Series<Double,Double>> series) {   
-        /*
-        List<FuzzySet> soundVariable = App.soundVariable;
-        BigDecimal step = BigDecimal.valueOf(0.1);
-       
-        for (FuzzySet term : soundVariable) {
-            XYChart.Series<Double,Double> ds = new XYChart.Series<>();
-            ds.setName(term.getFuzzySetName());
-
-            BigDecimal x = BigDecimal.valueOf(term.getMinX());
-            BigDecimal limitX = BigDecimal.valueOf(term.getMaxX());
-            while (x.compareTo(limitX) != 1) {
-                double y = term.calculateY(x.doubleValue());
-                ds.getData().add(new XYChart.Data<Double,Double>(x.doubleValue(), y));
-                x = x.add(step);
-            }
-            soundChart.getData().add(ds);
-        }*/
         soundChart.getData().addAll(series);
     }
 
-    public void drawAnimationChart() {
-        
+    public void drawAnimationChart(List<XYChart.Series<Double,Double>> series) {
+        animationChart.getData().addAll(series);
     }
 
-    public void drawStoryChart() {
-        
+    public void drawStoryChart(List<XYChart.Series<Double,Double>> series) {
+        storyChart.getData().addAll(series);
     }
 
-    public void drawCharactersChart() {
-        
+    public void drawCharactersChart(List<XYChart.Series<Double,Double>> series) {
+        charactersChart.getData().addAll(series);
     }
 
     public void drawRatingChart(List<XYChart.Series<Double,Double>> series) {

@@ -42,7 +42,7 @@
       </VBox>
       <LineChart fx:id="soundChart" animated="false" createSymbols="false" legendSide="LEFT" titleSide="BOTTOM" GridPane.columnSpan="2" GridPane.rowIndex="2">
         <xAxis>
-          <NumberAxis label="Оценка критерия" side="BOTTOM" />
+          <NumberAxis autoRanging="false" label="Оценка критерия" side="BOTTOM" tickUnit="1.0" upperBound="10.0" />
         </xAxis>
         <yAxis>
           <NumberAxis animated="false" autoRanging="false" label="Степень принадлежности" side="LEFT" tickUnit="0.1" upperBound="1.0" />
@@ -50,7 +50,7 @@
       </LineChart>
       <LineChart fx:id="animationChart" animated="false" createSymbols="false" legendSide="LEFT" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2">
         <xAxis>
-          <NumberAxis label="Оценка критерия" side="BOTTOM" />
+          <NumberAxis autoRanging="false" label="Оценка критерия" side="BOTTOM" tickUnit="1.0" upperBound="10.0" />
         </xAxis>
         <yAxis>
           <NumberAxis animated="false" autoRanging="false" label="Степень принадлежности" side="LEFT" tickUnit="0.1" upperBound="1.0" />
@@ -58,7 +58,7 @@
       </LineChart>
       <LineChart fx:id="storyChart" animated="false" createSymbols="false" legendSide="LEFT" prefHeight="302.0" prefWidth="667.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
         <xAxis>
-          <NumberAxis label="Оценка критерия" side="BOTTOM" />
+          <NumberAxis autoRanging="false" label="Оценка критерия" side="BOTTOM" tickUnit="1.0" upperBound="10.0" />
         </xAxis>
         <yAxis>
           <NumberAxis animated="false" autoRanging="false" label="Степень принадлежности" side="LEFT" tickUnit="0.1" upperBound="1.0" />
@@ -66,7 +66,7 @@
       </LineChart>
       <LineChart fx:id="charactersChart" animated="false" createSymbols="false" legendSide="LEFT" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="4">
         <xAxis>
-          <NumberAxis label="Оценка критерия" side="BOTTOM" />
+          <NumberAxis autoRanging="false" label="Оценка критерия" side="BOTTOM" tickUnit="1.0" upperBound="10.0" />
         </xAxis>
         <yAxis>
           <NumberAxis animated="false" autoRanging="false" label="Степень принадлежности" side="LEFT" tickUnit="0.1" upperBound="1.0" />
@@ -74,7 +74,7 @@
       </LineChart>
       <LineChart fx:id="ratingChart" animated="false" createSymbols="false" legendSide="LEFT" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="5">
          <xAxis>
-            <NumberAxis label="Оценка критерия" side="BOTTOM" />
+            <NumberAxis autoRanging="false" label="Оценка критерия" side="BOTTOM" tickUnit="1.0" upperBound="10.0" />
          </xAxis>
          <yAxis>
             <NumberAxis animated="false" autoRanging="false" label="Степень принадлежности" side="LEFT" tickUnit="0.1" upperBound="1.0" />

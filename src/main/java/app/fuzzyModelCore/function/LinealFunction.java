@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /**
  * Класс представляет собой простую линейную функцию - прямую линию.
  * Уравнение прямой по двум точкам: (х - х1) / (x2 - x1) = (y - y1) / (y2 - y1);
- * y = [(x - x1) * (y1 - y1) / (x2 - x1)] + y1;
+ * y(x) = [(x - x1) * (y1 - y1) / (x2 - x1)] + y1;
  * 
  * Для подсчёта {@code calculateY} используется уравнение прямой по двум точкам, которое формируется из параметров, переданных в
  * конструктор.
@@ -17,7 +17,16 @@ public class LinealFunction implements IFunction {
     private BigDecimal secondXPoint;
     private BigDecimal secondYPoint;
 
+    /**
+     * Принимает параметры для построения прямой. {@code firstXPoint} и {@code secondXPoint} должны быть границами прямой
+     * по оси Х.
+     * @param firstXPoint значение крайней левой точки по оси Х.
+     * @param firstYPoint значение крайней левой точки по оси Y.    
+     * @param secondXPoint значение крайней правой точки по оси X.
+     * @param secondYPoint значение крайней правой точки по оси Y.
+     */
     public LinealFunction(double firstXPoint, double firstYPoint, double secondXPoint, double secondYPoint) {
+        if (firstXPoint > secondXPoint) throw new IllegalArgumentException("left limit > right limit");
         this.firstXPoint = BigDecimal.valueOf(firstXPoint);
         this.firstYPoint = BigDecimal.valueOf(firstYPoint);
         this.secondXPoint = BigDecimal.valueOf(secondXPoint);

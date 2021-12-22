@@ -2,19 +2,16 @@ package app;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
-import app.Service.FuzzySetsCreatingService;
+import app.Factory.FuzzySetsCreatingFactory;
 import app.controller.FuzzyChartsController;
 import app.controller.MainSceneController;
 import app.fuzzyModelCore.FuzzySet;
-import app.fuzzyModelCore.function.LinealFunction;
 import app.ui.FuzzyChartsSceneLoader;
 import app.ui.MainSceneLoader;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -41,13 +38,15 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         // System.out.println(getClass().getResource("/app/fxml/main_scene.fxml").getFile());
-        this.prepareFuzzyModel();
 
         this.prepareMainScene(stage);
         this.prepareFuzzyChartScene(stage);
         this.prepareRulesBaseScene(stage);
         this.prepareFuzzyModelScene(stage);
         this.loadIcon(stage);
+
+        this.prepareFuzzyModel();
+        this.drawVariablesOnFuzzyCharts();
 
         stage.setTitle("Fuzzy anime rater - Main menu");
         stage.setResizable(false);
@@ -84,22 +83,32 @@ public class App extends Application {
         }
         App.fuzzyChartsSceneController = fuzzLoader.getController();
         fuzzLoader.getController().setStage(stage);
+    }
 
+    private void drawVariablesOnFuzzyCharts() {
         var series = App.fuzzyChartsSceneController.prepareSeries(App.soundVariable, new BigDecimal(0.1));
         App.fuzzyChartsSceneController.drawSoundChart(series);
+
+        series = App.fuzzyChartsSceneController.prepareSeries(App.animationVariable, new BigDecimal(0.05));
+        App.fuzzyChartsSceneController.drawAnimationChart(series);
+
+        series = App.fuzzyChartsSceneController.prepareSeries(App.storyVariable, new BigDecimal(0.05));
+        App.fuzzyChartsSceneController.drawStoryChart(series);
+
         series = App.fuzzyChartsSceneController.prepareSeries(App.ratingVariable, new BigDecimal(0.1));
         App.fuzzyChartsSceneController.drawRatingChart(series);
+
     }
 
     private void prepareFuzzyModel() {
 
-       App.soundVariable = FuzzySetsCreatingService.getSoundVariable();
+       App.soundVariable = FuzzySetsCreatingFactory.getSoundVariable();     
+       App.animationVariable = FuzzySetsCreatingFactory.getAnimationVariable();   
+       App.storyVariable = FuzzySetsCreatingFactory.getStoryVariable();
        /*
-       animationVariable = FuzzySetsCreatingService.getAnimationVariable();
-       storyVariable = FuzzySetsCreatingService.getStoryVariable();
        charactersVariable = FuzzySetsCreatingService.getCharactersVariable();
        */
-       App.ratingVariable = FuzzySetsCreatingService.getRatingVariable();
+       App.ratingVariable = FuzzySetsCreatingFactory.getRatingVariable();
     }
 
     private void prepareRulesBaseScene(Stage stage) {

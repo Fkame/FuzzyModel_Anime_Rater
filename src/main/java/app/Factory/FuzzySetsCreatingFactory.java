@@ -1,12 +1,13 @@
-package app.Service;
+package app.Factory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import app.fuzzyModelCore.FuzzySet;
 import app.fuzzyModelCore.function.LinealFunction;
+import app.fuzzyModelCore.function.SigmoidFunction;
 
-public class FuzzySetsCreatingService {
+public class FuzzySetsCreatingFactory {
     
     public static List<FuzzySet> getSoundVariable() {
         List<FuzzySet> soundVariable = new ArrayList<>();
@@ -21,7 +22,6 @@ public class FuzzySetsCreatingService {
         goodSound.add(new LinealFunction(3, 0, 7, 1));
         goodSound.add(new LinealFunction(7, 1, 10, 1));
 
-        soundVariable = new ArrayList<FuzzySet>();
         soundVariable.add(badSound);
         soundVariable.add(goodSound);
 
@@ -29,11 +29,37 @@ public class FuzzySetsCreatingService {
     }
 
     public static List<FuzzySet> getAnimationVariable() {
-        return null;
+        List<FuzzySet> animationVariable = new ArrayList<>();
+
+        FuzzySet badPicture = new FuzzySet("Bad");
+        badPicture.add(new SigmoidFunction(0, 10, -1, 5));
+
+        FuzzySet goodPicture = new FuzzySet("Good");
+        goodPicture.add(new SigmoidFunction(0, 10, 1, 5));
+
+        animationVariable.add(badPicture);
+        animationVariable.add(goodPicture);
+
+        return animationVariable;
     }
 
     public static List<FuzzySet> getStoryVariable() {
-        return null;
+        List<FuzzySet> storyVariable = new ArrayList<>();
+
+        FuzzySet badStory = new FuzzySet("Bad");
+        badStory.add(new SigmoidFunction(0, 4, -6, 3));
+
+        /*
+        * Normal story
+        */
+
+        FuzzySet goodStory = new FuzzySet("Good");
+        goodStory.add(new SigmoidFunction(6, 10, 4, 7.5));
+
+        storyVariable.add(badStory);
+        storyVariable.add(goodStory);
+        
+        return storyVariable;
     }
 
     public static List<FuzzySet> getCharactersVariable() {
