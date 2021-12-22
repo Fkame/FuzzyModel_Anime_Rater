@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.fuzzyModelCore.FuzzySet;
+import app.fuzzyModelCore.function.GaussianFunction;
 import app.fuzzyModelCore.function.LinealFunction;
 import app.fuzzyModelCore.function.QudraticFunction;
 import app.fuzzyModelCore.function.SigmoidFunction;
@@ -72,15 +73,15 @@ public class FuzzySetsCreatingFactory {
         badChars.add(new LinealFunction(0, 1, 2, 1));
         badChars.add(new QudraticFunction(2, 5, false));
 
-        /*
-        * Normal story
-        */
+        FuzzySet normalChars = new FuzzySet("Normal");
+        normalChars.add(new GaussianFunction(2, 8, 5, 1));
 
         FuzzySet goodChars = new FuzzySet("Good");
         goodChars.add(new QudraticFunction(5, 8, true));
         goodChars.add(new LinealFunction(8, 1, 10, 1));
 
         charactersVariable.add(badChars);
+        charactersVariable.add(normalChars);
         charactersVariable.add(goodChars);
 
         return charactersVariable;
