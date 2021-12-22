@@ -86,15 +86,24 @@ public class App extends Application {
     }
 
     private void drawVariablesOnFuzzyCharts() {
+
+        // drawing Sound Variable
         var series = App.fuzzyChartsSceneController.prepareSeries(App.soundVariable, new BigDecimal(0.1));
         App.fuzzyChartsSceneController.drawSoundChart(series);
 
+        // drawing Animation Variable
         series = App.fuzzyChartsSceneController.prepareSeries(App.animationVariable, new BigDecimal(0.05));
         App.fuzzyChartsSceneController.drawAnimationChart(series);
 
-        series = App.fuzzyChartsSceneController.prepareSeries(App.storyVariable, new BigDecimal(0.05));
+        // drawing Story Variable
+        series = App.fuzzyChartsSceneController.prepareSeries(App.storyVariable, new BigDecimal(0.01));
         App.fuzzyChartsSceneController.drawStoryChart(series);
 
+        // drawing Characters Variable
+        series = App.fuzzyChartsSceneController.prepareSeries(App.charactersVariable, new BigDecimal(0.05));
+        App.fuzzyChartsSceneController.drawCharactersChart(series);
+
+        // drawing Sound Variable
         series = App.fuzzyChartsSceneController.prepareSeries(App.ratingVariable, new BigDecimal(0.1));
         App.fuzzyChartsSceneController.drawRatingChart(series);
 
@@ -105,9 +114,7 @@ public class App extends Application {
        App.soundVariable = FuzzySetsCreatingFactory.getSoundVariable();     
        App.animationVariable = FuzzySetsCreatingFactory.getAnimationVariable();   
        App.storyVariable = FuzzySetsCreatingFactory.getStoryVariable();
-       /*
-       charactersVariable = FuzzySetsCreatingService.getCharactersVariable();
-       */
+       App.charactersVariable = FuzzySetsCreatingFactory.getCharactersVariable();
        App.ratingVariable = FuzzySetsCreatingFactory.getRatingVariable();
     }
 

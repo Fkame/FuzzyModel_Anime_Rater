@@ -35,6 +35,8 @@ public class LinealFunction implements IFunction {
     
     public double calculateY (double xValue) {
         BigDecimal x = BigDecimal.valueOf(xValue);
+        if (x.compareTo(secondXPoint) == 1 | x.compareTo(firstXPoint) == -1) return 0;
+        
         BigDecimal xMinusX1 = x.subtract(firstXPoint);
         BigDecimal y2MinusY1 = secondYPoint.subtract(firstYPoint);
         BigDecimal x2MinusX1 = secondXPoint.subtract(firstXPoint);

@@ -5,6 +5,7 @@ import java.util.List;
 
 import app.fuzzyModelCore.FuzzySet;
 import app.fuzzyModelCore.function.LinealFunction;
+import app.fuzzyModelCore.function.QudraticFunction;
 import app.fuzzyModelCore.function.SigmoidFunction;
 
 public class FuzzySetsCreatingFactory {
@@ -49,21 +50,40 @@ public class FuzzySetsCreatingFactory {
         FuzzySet badStory = new FuzzySet("Bad");
         badStory.add(new SigmoidFunction(0, 4, -6, 3));
 
-        /*
-        * Normal story
-        */
+        FuzzySet normalStory = new FuzzySet("Normal");
+        normalStory.add(new QudraticFunction(2, 4, true));
+        normalStory.add(new LinealFunction(4, 1, 6, 1));
+        normalStory.add(new QudraticFunction(6, 9, false));
 
         FuzzySet goodStory = new FuzzySet("Good");
         goodStory.add(new SigmoidFunction(6, 10, 4, 7.5));
 
         storyVariable.add(badStory);
+        storyVariable.add(normalStory);
         storyVariable.add(goodStory);
         
         return storyVariable;
     }
 
     public static List<FuzzySet> getCharactersVariable() {
-        return null;
+        List<FuzzySet> charactersVariable = new ArrayList<>();
+
+        FuzzySet badChars = new FuzzySet("Bad");
+        badChars.add(new LinealFunction(0, 1, 2, 1));
+        badChars.add(new QudraticFunction(2, 5, false));
+
+        /*
+        * Normal story
+        */
+
+        FuzzySet goodChars = new FuzzySet("Good");
+        goodChars.add(new QudraticFunction(5, 8, true));
+        goodChars.add(new LinealFunction(8, 1, 10, 1));
+
+        charactersVariable.add(badChars);
+        charactersVariable.add(goodChars);
+
+        return charactersVariable;
     }
 
     public static List<FuzzySet> getRatingVariable() {      

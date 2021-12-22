@@ -1,7 +1,6 @@
 package app.fuzzyModelCore.function;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 
 /**
@@ -30,6 +29,8 @@ public class SigmoidFunction implements IFunction {
 
     public double calculateY (double xValue) {
         BigDecimal x = BigDecimal.valueOf(xValue);
+        if (x.compareTo(rightXLimit) == 1 | x.compareTo(leftXLimit) == -1) return 0;
+
         BigDecimal xMinusShift = x.subtract(shiftOnX);
         BigDecimal degree = bendCoef.negate().multiply(xMinusShift);
         BigDecimal exponent = BigDecimal.valueOf(Math.exp(degree.doubleValue()));
