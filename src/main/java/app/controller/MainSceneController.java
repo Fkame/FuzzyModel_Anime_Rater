@@ -33,6 +33,9 @@ public class MainSceneController {
     }
 
     public void goToRulesBaseButtonClicked(ActionEvent event) {
+        App.rulesBaseSceneController.setPictureAndBlackout(imageView.getImage(), imageBlackout.getOpacity());
+        stage.setScene(App.rulesBaseScene);
+        stage.centerOnScreen();
         System.out.println("goToRulesBaseButtonClicked");
     }
 
