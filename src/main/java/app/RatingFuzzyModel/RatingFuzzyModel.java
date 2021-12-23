@@ -3,43 +3,29 @@ package app.RatingFuzzyModel;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import app.RatingFuzzyModel.data.ActivatedTerm;
+import app.RatingFuzzyModel.data.FuzzyConclusionFigure;
 import app.RatingFuzzyModel.fuzzyModelCore.FuzzyRule;
 import app.RatingFuzzyModel.fuzzyModelCore.FuzzySet;
 
 public class RatingFuzzyModel {
 
-    /**
-     * FuzzySet = 1 терм (нечёткое множество) = несколько функций. 
-     * <p>List<FuzzySet> = 1 лингвистическая переменная = несколько нечётких множеств.
-     * <p>List<List<FuzzySet>> = список из нескольких лингвистических переменнных
-     */
-    private List<List<FuzzySet>> listOfFuzzyVariables;
-
     private List<FuzzySet> outputVariable;
-
     private List<FuzzyRule> rules;
 
     public int scaleValue = 3;
     public BigDecimal minimumLimitForRuleActivation = BigDecimal.valueOf(0.01);
-    public BigDecimal stepOnXAxis = BigDecimal.valueOf(0.01);
 
     /**
-     * 
-     * @param rules список правил для нечёткого вывода.
-     * @param outputVariable выходная лингвистическая переменная.
-     * @param inputVariables входные лингвистические переменные. См. примечание.
-     * <p>Примечание:
-     * {@code FuzzySet} = 1 терм (нечёткое множество) = несколько функций.
-     * {@code List<FuzzySet>} = 1 лингвистическая переменная = несколько нечётких множеств.
-     * {@code List<List<FuzzySet>>} = список из нескольких лингвистических переменнных.
+     * Шаг по оси X, который будет использоваться для акумуляции модифицированных заключений в некую итоговую фигуру для 
+     * последующей дефаззификации по ней.
      */
-    public RatingFuzzyModel (List<FuzzyRule> rules, List<FuzzySet> outputVariable, List<FuzzySet> ... inputVariables) 
-    {
-        this.listOfFuzzyVariables = Arrays.asList(inputVariables);
+    public BigDecimal stepOnXAxis = BigDecimal.valueOf(0.01);
+
+    
+    public RatingFuzzyModel (List<FuzzyRule> rules, List<FuzzySet> outputVariable) {
         this.outputVariable = outputVariable;
         this.rules = rules;
     }
@@ -52,48 +38,40 @@ public class RatingFuzzyModel {
      * @return оценка аниме по входным критериям.
      */
     public ModelResult evaluteAnime(List<Double> inputScores) {
-        if (inputScores.size() != listOfFuzzyVariables.size()) 
-            throw new IllegalArgumentException("Кол-во входных значений != кол-ву входных переменных");
-
-        /*
-        // Шаг 1 - Фаззификация
-        // Данная переменая - список степеней принадлежности входных значений всем термам соответствующей лингвистической переменной.
-        List<List<Double>> listOfDegreesToTerms = new ArrayList<>();
-        for (int i = 0; i < inputScores.size(); i++) {
-            listOfDegreesToTerms.add(fuzzification(inputScores.get(i), listOfFuzzyVariables.get(i)));
-        }
-        */
-
-        // Шаг 2 - Степень выполнения правил
+        // Шаг 1 - Степень выполнения правил
         List<Double> rulesActivation = calculateRulesActivationValues(inputScores);
 
-        // Шаг 3 - Активация термов выходной лингвистической переменной
+        // Шаг 2 - Активированность термов выходной лингвистической переменной
+        // В этом месте на выходные термы ставится ограничение в виде среза от правила.
         List<ActivatedTerm> activatedTerms = activateOutputTermsByRules(rules, rulesActivation);
         
-        // Шаг 4 - Акумуляция заключений
-        
-        
+        // Шаг 3 - Объединение модифицированных термов в 1 график для последующей дефаззификации.
+        FuzzyConclusionFigure resultFigure = 
+            this.getFinalFuzzySet(activatedTerms, this.getOutputVariableMin().doubleValue(), this.getOutputVariableMax().doubleValue());
 
-        // Шаг 5 - Дефаззификация
+        // Шаг 4 - Дефаззификация
+        double exactValue = defuzzificate(resultFigure);
 
-
-        // Заполнение результата
-        ModelResult result = new ModelResult();
-        result.inputs = List.copyOf(inputScores);
-        result.fuzzyScore = activatedTerms.stream().max(ActivatedTerm::compareTo).get().getTermName();
-
-        return result;
+        // Шаг 5 - Формирование результатов
+        ModelResult modelRez = new ModelResult();
+        modelRez.inputs = List.copyOf(inputScores);
+        modelRez.fuzzyScore = this.findOutputTermByXValue(resultFigure.findXwhereMaxY());
+        modelRez.outputScore = exactValue;
+        return modelRez; 
     }
 
-    /*
-    public List<Double> fuzzification(double score, List<FuzzySet> terms) {
-        List<Double> degrees = new ArrayList<>();
-        for (FuzzySet term : terms) {
-            degrees.add(term.calculateY(score));
+    public String findOutputTermByXValue(double x) {
+        double maxY = outputVariable.get(0).calculateY(x);
+        String nameOfTerm = outputVariable.get(0).getFuzzySetName();
+        for (int i = 1; i < outputVariable.size(); i++) {
+            double localY = outputVariable.get(i).calculateY(x);
+            if (localY > maxY) {
+                maxY = localY;
+                nameOfTerm = outputVariable.get(i).getFuzzySetName();
+            }
         }
-        return degrees;
+        return nameOfTerm;
     }
-    */
 
     public List<Double> calculateRulesActivationValues(List<Double> inputScores) {
         List<Double> degreesOfRulesActivation = new ArrayList<>();
@@ -103,6 +81,17 @@ public class RatingFuzzyModel {
         return degreesOfRulesActivation;
     }
 
+    /**
+     * Модифицирует исходные термы выходного множества, добавляя в них ограничение в виде срезов, представленных в виде значений
+     * активизации активных правил.
+     * @param rules список правил.
+     * @param rulesActivation степени активизации правил. Последовательность должна совпадать с {@code rules}.
+     * @return список из модифицированных каждым правилом термов выходных множеств. 
+     * <p>То есть получается так, что каждое активное правило (степень активации которого должна быть выше 
+     * {@code RatingFuzzyModel.minimumLimitForRuleActivation}) модифицирует какой-либо выходной терм, создавая 
+     * горизонтальный срез по оси Y. Таким образом, количество элементов в выходном списке будет равняться количеству 
+     * активизированных правил.
+     */
     public List<ActivatedTerm> activateOutputTermsByRules(List<FuzzyRule> rules, List<Double>rulesActivation) {
         if (rules.size() != rulesActivation.size()) throw new IllegalArgumentException("rules.size() != rulesActivation.size()");
 
@@ -113,45 +102,16 @@ public class RatingFuzzyModel {
             if (correctActivation.compareTo(minimumLimitForRuleActivation) == -1) continue;
 
             FuzzySet activatingTerm = rules.get(i).getConclusionTerm();
-            ActivatedTerm activatedTerm = this.activateOutputTerm(activatingTerm, activation, this.stepOnXAxis);
+            ActivatedTerm activatedTerm = this.activateOutputTerm(activatingTerm, activation);
             activatedTerms.add(activatedTerm);
         }
         return activatedTerms;
     }
 
-    private ActivatedTerm activateOutputTerm(FuzzySet term, double activationValue, BigDecimal step) {
-        BigDecimal variableStartPoint = this.getOutputVariableMin();
-        BigDecimal variableEndPoint = this.getOutputVariableMax();
-
-        BigDecimal startPoint = BigDecimal.valueOf(term.getMinX());
-        BigDecimal endPoint = BigDecimal.valueOf(term.getMaxX());
-
-        List<Double> pointsX = new ArrayList<>();
-        List<Double> pointsY = new ArrayList<>();
-
-        BigDecimal x = variableStartPoint;
-        for (; x.compareTo(startPoint) == -1; x.add(step)) {
-            pointsX.add(x.doubleValue());
-            pointsY.add(0.0);
-        }
-
-        for (; x.compareTo(endPoint) == -1; x.add(step)) {
-            pointsX.add(x.doubleValue());
-            double y = term.calculateY(x.doubleValue());
-            pointsY.add(Math.min(activationValue, y));
-        }
-    
-        for (; x.compareTo(variableEndPoint) == -1; x.add(step)) {
-            pointsX.add(x.doubleValue());
-            pointsY.add(0.0);
-        }
-        pointsX.add(variableEndPoint.doubleValue());
-        pointsY.add(0.0);
-        
+    public ActivatedTerm activateOutputTerm(FuzzySet term, double activationValue) {
         ActivatedTerm activatedTerm = new ActivatedTerm();
         activatedTerm.originalTerm = term;
-        activatedTerm.pointsOnX = pointsX;
-        activatedTerm.newPointsOnY = pointsY;
+        activatedTerm.functionSlice = activationValue;
         return activatedTerm;
     }
 
@@ -173,8 +133,54 @@ public class RatingFuzzyModel {
         return BigDecimal.valueOf(max);
     }
 
-    public List<Double> finalFuzzySet(List<Double> xPoints, List<ActivatedTerm> terms) {
+    public FuzzyConclusionFigure getFinalFuzzySet(List<ActivatedTerm> activatedTerms, double startX, double endX) {
+        FuzzyConclusionFigure figure = new FuzzyConclusionFigure();
+        BigDecimal x = BigDecimal.valueOf(startX);
+        BigDecimal limit = BigDecimal.valueOf(endX);
+
+        for (; x.compareTo(limit) == -1; x.add(stepOnXAxis)) {
+            double maxY = this.findMaxYInActivatedTerms(activatedTerms, x.doubleValue());
+            figure.addX(x.doubleValue());
+            figure.addY(maxY);
+        }
+
+        double maxY = this.findMaxYInActivatedTerms(activatedTerms, limit.doubleValue());
+        figure.addX(x.doubleValue());
+        figure.addY(maxY);
         
+        return figure;
+    }
+
+    public double findMaxYInActivatedTerms(List<ActivatedTerm> activatedTerms, double currentX) {
+        double maxY = activatedTerms.get(0).calculateDegree(currentX);
+        for (ActivatedTerm term : activatedTerms) {
+            double yValue = term.calculateDegree(currentX);
+            maxY = Math.max(maxY, yValue);
+        }
+        return maxY;
+    }
+
+    /**
+     * Дефаззификация по дискретному методу центроида.
+     * @param figure акумуляция модифицированных нечётких термов выходной лингвистической переменной.
+     * @return чёткое число - ответ.
+     */
+    public double defuzzificate(FuzzyConclusionFigure figure) {
+        BigDecimal numerator = BigDecimal.ZERO;
+        for (int i = 0; i < figure.pointsX.size(); i++) {
+            BigDecimal xValue = BigDecimal.valueOf(figure.pointsX.get(i));
+            BigDecimal yValue = BigDecimal.valueOf(figure.pointsY.get(i));
+            numerator.add(xValue.multiply(yValue));
+        }
+        
+        BigDecimal denuminator = BigDecimal.ZERO;
+        for (int i = 0; i < figure.pointsX.size(); i++) {
+            BigDecimal yValue = BigDecimal.valueOf(figure.pointsY.get(i));
+            denuminator.add(yValue);
+        }
+
+        BigDecimal crispNumber = numerator.divide(denuminator, scaleValue, RoundingMode.HALF_EVEN);
+        return crispNumber.doubleValue();
     }
 
 }
