@@ -5,9 +5,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import app.Factory.FuzzySetsCreatingFactory;
+import app.RatingFuzzyModel.fuzzyModelCore.FuzzySet;
 import app.controller.FuzzyChartsController;
 import app.controller.MainSceneController;
-import app.fuzzyModelCore.FuzzySet;
 import app.ui.FuzzyChartsSceneLoader;
 import app.ui.MainSceneLoader;
 import javafx.application.Application;

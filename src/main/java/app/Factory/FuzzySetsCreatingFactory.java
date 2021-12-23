@@ -3,11 +3,11 @@ package app.Factory;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.fuzzyModelCore.FuzzySet;
-import app.fuzzyModelCore.function.GaussianFunction;
-import app.fuzzyModelCore.function.LinealFunction;
-import app.fuzzyModelCore.function.QudraticFunction;
-import app.fuzzyModelCore.function.SigmoidFunction;
+import app.RatingFuzzyModel.fuzzyModelCore.FuzzySet;
+import app.RatingFuzzyModel.fuzzyModelCore.function.GaussianFunction;
+import app.RatingFuzzyModel.fuzzyModelCore.function.LinealFunction;
+import app.RatingFuzzyModel.fuzzyModelCore.function.QudraticFunction;
+import app.RatingFuzzyModel.fuzzyModelCore.function.SigmoidFunction;
 
 public class FuzzySetsCreatingFactory {
     

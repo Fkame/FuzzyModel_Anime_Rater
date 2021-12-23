@@ -1,4 +1,4 @@
-package app.fuzzyModelCore.function;
+package app.RatingFuzzyModel.fuzzyModelCore.function;
 
 public interface IFunction {
     

@@ -1,9 +1,9 @@
-package app.fuzzyModelCore;
+package app.RatingFuzzyModel.fuzzyModelCore;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import app.fuzzyModelCore.function.IFunction;
+import app.RatingFuzzyModel.fuzzyModelCore.function.IFunction;
 
 public class FuzzySet {
     private List<IFunction> functions;

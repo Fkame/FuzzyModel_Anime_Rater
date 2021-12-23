@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.App;
-import app.fuzzyModelCore.FuzzySet;
+import app.RatingFuzzyModel.fuzzyModelCore.FuzzySet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
@@ -54,7 +54,7 @@ public class FuzzyChartsController {
                 ds.getData().add(new XYChart.Data<Double,Double>(x.doubleValue(), y));
                 x = x.add(step);
             }
-            if (x.compareTo(limitX) == 1) {
+            if (x.subtract(step).compareTo(limitX) == -1) {
                 double y = term.calculateY(limitX.doubleValue());
                 ds.getData().add(new XYChart.Data<Double,Double>(x.doubleValue(), y));
                 x = x.add(step);
