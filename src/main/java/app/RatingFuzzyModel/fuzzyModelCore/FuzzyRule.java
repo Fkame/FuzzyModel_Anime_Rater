@@ -51,5 +51,9 @@ public class FuzzyRule {
         return this.conclusionTerm;
     }
 
+    public List<FuzzySet> getConditionTerms() {
+        return this.conditionTerms;
+    }
+
     
 }

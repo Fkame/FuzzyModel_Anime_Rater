@@ -24,22 +24,25 @@ public class App extends Application {
 
     public static final String pathToIcon = "/app/images/icon.jpg";
     
+    // Сцены
     public static Scene mainScene = null;
-    public static MainSceneController mainSceneController = null;
-
     public static Scene fuzzyChartsScene = null;
-    public static FuzzyChartsController fuzzyChartsSceneController = null;
-
     public static Scene rulesBaseScene = null;
-    public static RulesBaseSceneController rulesBaseSceneController = null;
-
     public static Scene fuzzyModelScene = null;
 
+    // Контроллеры
+    public static MainSceneController mainSceneController = null;
+    public static FuzzyChartsController fuzzyChartsSceneController = null;
+    public static RulesBaseSceneController rulesBaseSceneController = null;
+
+    // Нечёткие переменные
     public static List<FuzzySet> soundVariable;
     public static List<FuzzySet> animationVariable;
     public static List<FuzzySet> storyVariable;
     public static List<FuzzySet> charactersVariable;
     public static List<FuzzySet> ratingVariable;
+
+    // База правил
     public static List<FuzzyRule> rules;
 
     @Override
@@ -51,18 +54,19 @@ public class App extends Application {
         this.prepareFuzzyChartScene(stage);
         this.prepareRulesBaseScene(stage);
         this.prepareFuzzyModelScene(stage);
+
         this.loadIcon(stage);
 
         // Scenes filling
         this.prepareFuzzyModel();
         this.drawVariablesOnFuzzyCharts();
-        //this.drawRuleBase();
+        this.drawRuleBase();
 
+        // Stage configs
         stage.setTitle("Fuzzy anime rater - Main menu");
-        stage.setResizable(false);
-
         stage.setScene(App.mainScene);
         stage.centerOnScreen();
+        stage.setResizable(false);
 
         stage.show();
     }
@@ -91,11 +95,9 @@ public class App extends Application {
         if (App.fuzzyChartsScene == null) System.exit(-1);
         App.rulesBaseSceneController = loader.getLoader().getController();
         App.rulesBaseSceneController.setStage(stage);
-        
     }
 
     private void drawVariablesOnFuzzyCharts() {
-
         // drawing Sound Variable
         var series = App.fuzzyChartsSceneController.prepareSeries(App.soundVariable, new BigDecimal(0.1));
         App.fuzzyChartsSceneController.drawSoundChart(series);
@@ -127,9 +129,11 @@ public class App extends Application {
 
        App.rules = RulesCreatingFactory.getRulesBase(ratingVariable, soundVariable, animationVariable, 
                                             storyVariable, charactersVariable);
-
     }
 
+    private void drawRuleBase() {
+        App.rulesBaseSceneController.drawRules();
+    }
 
     private void prepareFuzzyModelScene(Stage stage) {
 
