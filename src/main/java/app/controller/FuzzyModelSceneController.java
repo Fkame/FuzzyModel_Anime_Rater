@@ -102,6 +102,7 @@ public class FuzzyModelSceneController {
             (characters > UPPER_LIMIT_FOR_VARIABLES | characters < BOTTOM_LIMIT_FOR_VARIABLES)) 
         {
             numberNotInInterval().showAndWait();
+            return;
         }
         
         // Модель
