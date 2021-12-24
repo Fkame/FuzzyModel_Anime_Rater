@@ -27,8 +27,7 @@ public class RulesBaseSceneController {
     private Stage stage;
     public void setStage(Stage stage) { this.stage = stage;}
 
-    public double labelCornerRadii = 2;
-    public double bottomMargin = 5;
+    public double spacingBetweenRules = 10;
 
     @FXML
     private ImageView imageView;
@@ -55,6 +54,7 @@ public class RulesBaseSceneController {
 
     public void drawRules() {
         exampleLabel.setVisible(false);
+        labelsContainer.setSpacing(spacingBetweenRules);
         for (FuzzyRule rule : App.rules) {
             String ruleString = rule.toString();
 
@@ -62,9 +62,8 @@ public class RulesBaseSceneController {
             ruleLabel.setFont(exampleLabel.getFont());
             ruleLabel.setTextFill(exampleLabel.getTextFill());
             Color ruleColor = this.getColorByTermName(rule.getConclusionTerm());
-            ruleLabel.setBackground(new Background(
-                        new BackgroundFill(ruleColor, new CornerRadii(labelCornerRadii), new Insets(0, 0, bottomMargin, 0))
-            ));
+            ruleLabel.setBackground(new Background(new BackgroundFill(ruleColor, null, null)));
+
             labelsContainer.getChildren().add(ruleLabel);
         }
     }

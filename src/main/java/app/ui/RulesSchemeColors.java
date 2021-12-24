@@ -9,6 +9,6 @@ public class RulesSchemeColors {
     public static Color bad = Color.rgb(218,218,82,0.5);
     public static Color veryBad = Color.rgb(237,109,109,0.5);
 
-    public static Color textColor = Color.BLACK;
+    public static Color textColor = Color.WHITE;
 
 }
