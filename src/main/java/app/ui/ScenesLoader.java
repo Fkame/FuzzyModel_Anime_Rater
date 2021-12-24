@@ -18,6 +18,9 @@ public class ScenesLoader {
             return new Scene(root);
         } catch (IOException ex) {
             System.out.println("Error loading " + pathToFXML + " scene!");
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+            
             return null;
         }     
     }

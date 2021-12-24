@@ -8,6 +8,7 @@ import app.Factory.RulesCreatingFactory;
 import app.RatingFuzzyModel.fuzzyModelCore.FuzzyRule;
 import app.RatingFuzzyModel.fuzzyModelCore.FuzzySet;
 import app.controller.FuzzyChartsController;
+import app.controller.FuzzyModelSceneController;
 import app.controller.MainSceneController;
 import app.controller.RulesBaseSceneController;
 import app.ui.PathsToFXML;
@@ -34,6 +35,7 @@ public class App extends Application {
     public static MainSceneController mainSceneController = null;
     public static FuzzyChartsController fuzzyChartsSceneController = null;
     public static RulesBaseSceneController rulesBaseSceneController = null;
+    public static FuzzyModelSceneController fuzzyModelSceneController = null;
 
     // Нечёткие переменные
     public static List<FuzzySet> soundVariable;
@@ -58,12 +60,12 @@ public class App extends Application {
         this.loadIcon(stage);
 
         // Scenes filling
-        this.prepareFuzzyModel();
+        this.prepareFuzzyModelConfigs();
         this.drawVariablesOnFuzzyCharts();
         this.drawRuleBase();
 
         // Stage configs
-        stage.setTitle("Fuzzy anime rater - Main menu");
+        stage.setTitle("Fuzzy anime rater");
         stage.setScene(App.mainScene);
         stage.centerOnScreen();
         stage.setResizable(false);
@@ -92,7 +94,7 @@ public class App extends Application {
     private void prepareRulesBaseScene(Stage stage) {
         ScenesLoader loader = new ScenesLoader();
         App.rulesBaseScene = loader.loadScene(PathsToFXML.RulesBasePath);
-        if (App.fuzzyChartsScene == null) System.exit(-1);
+        if (App.rulesBaseScene == null) System.exit(-1);
         App.rulesBaseSceneController = loader.getLoader().getController();
         App.rulesBaseSceneController.setStage(stage);
     }
@@ -120,7 +122,7 @@ public class App extends Application {
 
     }
 
-    private void prepareFuzzyModel() {
+    private void prepareFuzzyModelConfigs() {
        App.soundVariable = FuzzySetsCreatingFactory.getSoundVariable();     
        App.animationVariable = FuzzySetsCreatingFactory.getAnimationVariable();   
        App.storyVariable = FuzzySetsCreatingFactory.getStoryVariable();
@@ -136,7 +138,11 @@ public class App extends Application {
     }
 
     private void prepareFuzzyModelScene(Stage stage) {
-
+        ScenesLoader loader = new ScenesLoader();
+        App.fuzzyModelScene = loader.loadScene(PathsToFXML.FuzzyModelScene);
+        if (App.fuzzyModelScene == null) System.exit(-1);
+        App.fuzzyModelSceneController = loader.getLoader().getController();
+        App.fuzzyModelSceneController.setStage(stage);
     }
 
     private void loadIcon(Stage stage) {

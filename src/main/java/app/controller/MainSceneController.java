@@ -40,6 +40,9 @@ public class MainSceneController {
     }
 
     public void goToModelButtonClicked(ActionEvent event) {
+        App.fuzzyModelSceneController.setPictureAndBlackout(imageView.getImage(), imageBlackout.getOpacity());
+        stage.setScene(App.fuzzyModelScene);
+        stage.centerOnScreen();
         System.out.println("goToModelButtonClicked");
     }
 
