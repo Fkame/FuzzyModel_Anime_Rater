@@ -1,10 +1,8 @@
-package app.fuzzyModelCore.function;
+package app.RatingFuzzyModel.fuzzyModelCore.function;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-
-import app.RatingFuzzyModel.fuzzyModelCore.function.GaussianFunction;
 
 public class TestGaussianFunction {
     

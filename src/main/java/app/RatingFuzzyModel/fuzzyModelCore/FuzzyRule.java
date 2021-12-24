@@ -27,7 +27,7 @@ public class FuzzyRule {
             FuzzySet conditionTerm = conditionTerms.get(i);
             double inputForTerm = inputValues.get(i);
             BigDecimal tempValue = BigDecimal.valueOf(conditionTerm.calculateY(inputForTerm));
-            activationValue.multiply(tempValue).setScale(scaleValue, RoundingMode.HALF_EVEN);
+            activationValue = activationValue.multiply(tempValue).setScale(scaleValue, RoundingMode.HALF_EVEN);
         }
         return activationValue.doubleValue();
     }

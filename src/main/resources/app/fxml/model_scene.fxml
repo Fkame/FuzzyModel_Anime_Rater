@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
@@ -23,14 +24,26 @@
       <Pane fx:id="imageBlackout" opacity="0.66" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgb(61, 61, 61);" />
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <bottom>
-            <Button fx:id="backButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#backButtonClicked" style="-fx-background-color: rgb(230,196,178);" text="Вернуться назад" textAlignment="CENTER" textFill="#3c3c3c" BorderPane.alignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="17.0" />
-               </font>
+            <HBox alignment="CENTER" spacing="100.0" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets top="15.0" />
                </BorderPane.margin>
-            </Button>
+               <children>
+                  <Button fx:id="backButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#backButtonClicked" style="-fx-background-color: rgb(230,196,178);" text="Вернуться назад" textAlignment="CENTER" textFill="#3c3c3c">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="clearButton" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#clearButtonClicked" style="-fx-background-color: rgb(74,236,193, 0.8);" text="Очистить график" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Button>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
          </bottom>
          <center>
             <GridPane prefHeight="514.0" prefWidth="1001.0" BorderPane.alignment="CENTER">
@@ -55,7 +68,7 @@
                               <Font name="System Bold" size="18.0" />
                            </font>
                         </Label>
-                        <AreaChart fx:id="conclusionsChart">
+                        <AreaChart fx:id="conclusionsChart" createSymbols="false" legendVisible="false">
                           <xAxis>
                             <NumberAxis autoRanging="false" side="LEFT" tickLabelFill="WHITE" tickUnit="0.5" upperBound="10.0">
                                  <tickLabelFont>

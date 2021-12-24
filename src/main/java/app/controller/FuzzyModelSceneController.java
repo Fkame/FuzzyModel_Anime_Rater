@@ -1,14 +1,21 @@
 package app.controller;
 
+import java.util.Arrays;
+import java.util.List;
+
 import app.App;
+import app.RatingFuzzyModel.ModelResult;
+import app.RatingFuzzyModel.RatingFuzzyModel;
+import app.RatingFuzzyModel.data.FuzzyConclusionFigure;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.AreaChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -52,12 +59,20 @@ public class FuzzyModelSceneController {
     @FXML
     private Button modelStartButton;
 
+    @FXML
+    private Button clearButton;
+
+    public void clearButtonClicked(ActionEvent event) {
+        conclusionsChart.getData().clear();
+    }
+
     public void modelStartClicked(ActionEvent event) {
         Integer sound = null;
         Integer animation = null;
         Integer story = null;
         Integer characters = null;
 
+        // Валидация
         String fieldText = "";
         String fieldName = "";
         try {
@@ -88,8 +103,32 @@ public class FuzzyModelSceneController {
         {
             numberNotInInterval().showAndWait();
         }
-
         
+        // Модель
+        RatingFuzzyModel fuzzyModel = new RatingFuzzyModel(App.rules, App.ratingVariable);
+        ModelResult results = fuzzyModel.evaluteAnime(Arrays.asList((double)sound, (double)animation, (double)story, (double)characters));
+        FuzzyConclusionFigure figure = fuzzyModel.getFuzzyConclusionFigure();
+        this.drawConclusionFigure(figure.pointsX, figure.pointsY);
+        this.printResultsToArea(results);
+    }
+
+    private void drawConclusionFigure(List<Double> pointsX, List<Double> pointsY) {
+        XYChart.Series<Double, Double> ser = new XYChart.Series<>();
+        int len = Math.min(pointsX.size(), pointsY.size());
+        
+        for (int i = 0; i < len; i++) {
+            ser.getData().add(new XYChart.Data<Double, Double>(pointsX.get(i), pointsY.get(i)));
+        }
+        conclusionsChart.getData().add(ser);
+    }
+
+    private void printResultsToArea(ModelResult results) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("--- Результаты оценки аниме нечёткой моделью ---\n");
+        builder.append("Входные параметры: " + results.inputs.toString() + "\n");
+        builder.append("Нечёткий результат: " + results.fuzzyScore + "\n");
+        builder.append("Чёткий результат: " + results.outputScore);
+        this.resultsArea.setText(builder.toString());
     }
 
     private Alert createFieldAlert(String fieldName, String enteredValue) {
