@@ -25,7 +25,7 @@
          <children>
             <VBox alignment="CENTER" layoutX="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label lineSpacing="5.0" text="Приветствую!&#10;&#10;Ниже представлены переходы к основным возможностям программы:&#10;1. В меню графиков выводятся функции принадлежонсти термов.&#10;2. В меню базы правил выводятся все правила, которые использьзует модель.&#10;3. В меню нечёткой модели можно прогнать модель по тестовым данным." textAlignment="CENTER" textFill="WHITE">
+                  <Label lineSpacing="5.0" text="Приветствую!&#10;&#10;Ниже представлены переходы к основным возможностям программы:&#10;1. В меню графиков выводятся функции принадлежности термов.&#10;2. В меню базы правил выводятся все правила, которые использьзует модель.&#10;3. В меню нечёткой модели можно прогнать модель по тестовым данным." textAlignment="CENTER" textFill="WHITE">
                      <VBox.margin>
                         <Insets bottom="50.0" />
                      </VBox.margin>
@@ -56,11 +56,12 @@
                   </Button>
                </children>
             </VBox>
-            <Slider fx:id="opacitySlider" blockIncrement="5.0" layoutX="359.0" layoutY="547.0" prefHeight="48.0" prefWidth="284.0" AnchorPane.bottomAnchor="5.0">
+            <Slider fx:id="opacitySlider" blockIncrement="5.0" layoutX="356.0" layoutY="547.0" prefHeight="48.0" prefWidth="284.0">
                <effect>
                   <Glow />
                </effect>
             </Slider>
+            <Button fx:id="changeBackgroundBtn" alignment="CENTER" layoutX="645.0" layoutY="547.0" maxHeight="45.0" maxWidth="50.0" mnemonicParsing="false" onAction="#changeBackgroundClicked" prefHeight="45.0" prefWidth="50.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
          </children>
       </AnchorPane>
    </children>

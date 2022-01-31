@@ -11,19 +11,18 @@ import app.controller.FuzzyChartsController;
 import app.controller.FuzzyModelSceneController;
 import app.controller.MainSceneController;
 import app.controller.RulesBaseSceneController;
-import app.ui.PathsToFXML;
+import app.ui.PathsToResources;
 import app.ui.ScenesLoader;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 /**
  * JavaFX App
  */
 public class App extends Application {
-
-    public static final String pathToIcon = "/app/images/icon.jpg";
     
     // Сцены
     public static Scene mainScene = null;
@@ -75,17 +74,20 @@ public class App extends Application {
 
     private void prepareMainScene(Stage stage) {
         ScenesLoader loader = new ScenesLoader();
-        App.mainScene = loader.loadScene(PathsToFXML.MainScenePath);
+        App.mainScene = loader.loadScene(PathsToResources.MainScenePath);
         if (App.mainScene == null) System.exit(-1);
         
         App.mainSceneController = loader.getLoader().getController();
         App.mainSceneController.activateSliderListening(66);
+        if (!App.mainSceneController.setChangeBackgroundButtonImg(PathsToResources.ChangeBackgroundImageButtonIcon))
+            App.mainSceneController.setChangeBackgroundButtonText("Сменить изображение");
+
         App.mainSceneController.setStage(stage);
     }
 
     private void prepareFuzzyChartScene(Stage stage) {
         ScenesLoader loader = new ScenesLoader();
-        App.fuzzyChartsScene = loader.loadScene(PathsToFXML.FuzzyChartPath);
+        App.fuzzyChartsScene = loader.loadScene(PathsToResources.FuzzyChartPath);
         if (App.fuzzyChartsScene == null) System.exit(-1);  
         App.fuzzyChartsSceneController = loader.getLoader().getController();
         App.fuzzyChartsSceneController.setStage(stage);
@@ -93,7 +95,7 @@ public class App extends Application {
 
     private void prepareRulesBaseScene(Stage stage) {
         ScenesLoader loader = new ScenesLoader();
-        App.rulesBaseScene = loader.loadScene(PathsToFXML.RulesBasePath);
+        App.rulesBaseScene = loader.loadScene(PathsToResources.RulesBasePath);
         if (App.rulesBaseScene == null) System.exit(-1);
         App.rulesBaseSceneController = loader.getLoader().getController();
         App.rulesBaseSceneController.setStage(stage);
@@ -139,7 +141,7 @@ public class App extends Application {
 
     private void prepareFuzzyModelScene(Stage stage) {
         ScenesLoader loader = new ScenesLoader();
-        App.fuzzyModelScene = loader.loadScene(PathsToFXML.FuzzyModelScene);
+        App.fuzzyModelScene = loader.loadScene(PathsToResources.FuzzyModelScene);
         if (App.fuzzyModelScene == null) System.exit(-1);
         App.fuzzyModelSceneController = loader.getLoader().getController();
         App.fuzzyModelSceneController.setStage(stage);
