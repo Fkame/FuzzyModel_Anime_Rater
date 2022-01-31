@@ -56,5 +56,4 @@ public class FuzzySet {
     public double getMaxX() {
         return this.maxX;
     }
-
 }
