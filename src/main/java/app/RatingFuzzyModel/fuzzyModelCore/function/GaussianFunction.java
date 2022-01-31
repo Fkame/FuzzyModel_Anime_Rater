@@ -56,6 +56,4 @@ public class GaussianFunction implements IFunction {
     public double getRightXLimit() {
         return this.rightXLimit.doubleValue();
     }
-
-    
 }

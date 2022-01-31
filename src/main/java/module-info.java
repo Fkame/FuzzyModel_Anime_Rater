@@ -1,6 +1,7 @@
 open module app {
+    requires javafx.base;
     requires javafx.controls;
-    requires com.google.gson;
+    requires javafx.graphics;
     requires javafx.fxml;
     exports app;
 }
