@@ -33,6 +33,7 @@ public class MainSceneController {
 
     private FileChooser fchos;
 
+    public MainSceneController() { }
 
     public void setStage(Stage stage) {
         this.stage = stage;
