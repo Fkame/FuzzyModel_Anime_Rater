@@ -49,10 +49,10 @@
 ## Скриншоты выполнения программы
 
 Главное окно программы
-![Картинка главного окна](src/main/resources/screenshots/main_window.PNG)
+![Картинка главного окна](src/main/resources/screenshots/main_window.png)
 
 Вкладка с распределением входных лингвистических переменных
-![Картинка распределения](src/main/resources/screenshots/fuzzy_variables.PNG)
+![Картинка распределения](src/main/resources/screenshots/fuzzy_variables.png)
 
 Пример вычисления оценки по критериям
 ![Картинка с примером](src/main/resources/screenshots/example.png)
